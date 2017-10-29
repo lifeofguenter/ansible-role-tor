@@ -1,0 +1,28 @@
+---
+
+- name: add tor apt-key
+  apt_key:
+    keyserver: keys.gnupg.net
+    id: A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89
+  become: yes
+
+- name: add tor repository
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - deb http://deb.torproject.org/torproject.org {{ ansible_distribution_release }} main
+    - deb-src http://deb.torproject.org/torproject.org {{ ansible_distribution_release }} main
+  become: yes
+
+- name: install tor
+  apt:
+    name: "{{ item }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 3600
+  with_items:
+    - tor
+    - deb.torproject.org-keyring
+  become: yes
