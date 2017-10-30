@@ -25,4 +25,5 @@
   with_items:
     - tor
     - deb.torproject.org-keyring
+    - tor-arm
   become: yes
